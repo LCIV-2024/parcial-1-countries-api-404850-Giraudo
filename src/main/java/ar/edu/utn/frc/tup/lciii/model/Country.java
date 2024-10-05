@@ -1,5 +1,7 @@
 package ar.edu.utn.frc.tup.lciii.model;
 
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
