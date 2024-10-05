@@ -3,6 +3,8 @@ package ar.edu.utn.frc.tup.lciii.controllers;
 import ar.edu.utn.frc.tup.lciii.dtos.countries.CountryDto;
 import ar.edu.utn.frc.tup.lciii.model.Country;
 import ar.edu.utn.frc.tup.lciii.service.CountryService;
+import ar.edu.utn.frc.tup.lciii.utils.Continent;
+import ar.edu.utn.frc.tup.lciii.utils.Language;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -81,15 +83,44 @@ class CountryControllerTest {
     }
 
     @Test
-    void getCountriesByContinent() {
+    void getCountriesByContinent() throws Exception {
+        List<CountryDto> countryList = new ArrayList<>();
+        countryList.add(countryDto);
+        countryList.add(countryDto2);
+
+        when(countryService.getAllCountriesByContinent(Continent.Americas)).thenReturn(countryList);
+
+        mockMvc.perform(get("/api/countries/Americas/continent").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+
     }
 
     @Test
-    void getCountriesByLang() {
+    void getCountriesByLang() throws Exception {
+        List<CountryDto> countryList = new ArrayList<>();
+        countryList.add(countryDto);
+        countryList.add(countryDto2);
+
+        when(countryService.getAllCountriesByLanguage(Language.Spanish)).thenReturn(countryList);
+
+        mockMvc.perform(get("/api/countries/Americas/continent").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test
-    void getCountryBorder() {
+    void getCountryBorder() throws Exception {
+
+        when(countryService.mostBorders()).thenReturn(countryDto);
+
+        mockMvc.perform(get("/api/countries/most-borders").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").hasJsonPath());
+
     }
 
     @Test
