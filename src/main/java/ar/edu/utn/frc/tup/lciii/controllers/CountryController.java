@@ -3,6 +3,8 @@ import ar.edu.utn.frc.tup.lciii.dtos.countries.CountryDto;
 import ar.edu.utn.frc.tup.lciii.dtos.countries.PostDto;
 import ar.edu.utn.frc.tup.lciii.model.Country;
 import ar.edu.utn.frc.tup.lciii.service.CountryService;
+import ar.edu.utn.frc.tup.lciii.utils.Continent;
+import ar.edu.utn.frc.tup.lciii.utils.Language;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class CountryController {
 
     // 3. Crear un endpoint que exponga todos paises que se encuentren dentro de un continente pasandoselo por parametro. (5 puntos)
     @GetMapping("api/countries/{continent}/continent")
-    public ResponseEntity<List<CountryDto>> getCountriesByContinent(@PathVariable String continent) {
+    public ResponseEntity<List<CountryDto>> getCountriesByContinent(@PathVariable Continent continent) {
 
         List<CountryDto> countries = countryService.getAllCountriesByContinent(continent);
 
@@ -55,9 +57,9 @@ public class CountryController {
 
     // 4. Crear un endpoint que exponga todos paises que hablen un idioma pasandoselo por parametro. (10 puntos)
     @GetMapping("api/countries/{language}/language")
-    public ResponseEntity<List<CountryDto>> getCountriesByLang(@PathVariable String continent) {
+    public ResponseEntity<List<CountryDto>> getCountriesByLang(@PathVariable Language language) {
 
-        List<CountryDto> countries = countryService.getAllCountriesByContinent(continent);
+        List<CountryDto> countries = countryService.getAllCountriesByLanguage(language);
 
         return ResponseEntity.ok(countries);
     }

@@ -4,8 +4,9 @@ import ar.edu.utn.frc.tup.lciii.dtos.countries.CountryDto;
 import ar.edu.utn.frc.tup.lciii.entities.CountryEntity;
 import ar.edu.utn.frc.tup.lciii.model.Country;
 import ar.edu.utn.frc.tup.lciii.repository.CountryRepository;
+import ar.edu.utn.frc.tup.lciii.utils.Continent;
+import ar.edu.utn.frc.tup.lciii.utils.Language;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -67,25 +68,29 @@ public class CountryService {
                 return result;
         }
 
-        public List<CountryDto> getAllCountriesByContinent(String cont){
+        public List<CountryDto> getAllCountriesByContinent(Continent cont){
                 List<CountryDto> countriesDto = new ArrayList<>();
                 List<Country> countries = getAllCountries();
 
                 for(Country country : countries){
-                        if(country.getRegion().equals(cont)){
+                        if(country.getRegion().equals(cont.toString())){
                                 countriesDto.add(mapToDTO(country));
                         }
                 }
                 return countriesDto;
         }
 
-        public List<CountryDto> getAllCountriesByLanguage(String language){
+        public List<CountryDto> getAllCountriesByLanguage(Language language){
                 List<CountryDto> countriesDto = new ArrayList<>();
                 List<Country> countries = getAllCountries();
 
-//                for(Country country : countries){
-//                        for(String lang : country.getLanguages())
-//                }
+                for(Country c : countries){
+                        if(c.getLanguages() != null && c.getLanguages().containsValue(language.toString()))
+                        {
+                                countriesDto.add(mapToDTO(c));
+                        }
+                }
+
                 return countriesDto;
         }
 
@@ -97,7 +102,7 @@ public class CountryService {
                 for(Country c : countries){
                         if(c.getBorders() != null && c.getBorders().size() > f){
                                 f = c.getBorders().size();
-                                c = country;
+                                country = c;
                         }
                 }
                 return mapToDTO(country);
